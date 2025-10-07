@@ -19,9 +19,9 @@ def GenerateReturns():
     # -----------------------
     # 1) 데이터 불러오기
     # -----------------------
-    input_path = "data/collectData.csv"   # ✅ 입력 파일명
+    input_path = "data/collectData.csv"   # 입력 파일명
     df = pd.read_csv(input_path)
-    print(f"✅ 원본 데이터 로드 완료: {len(df):,}행")
+    print(f"원본 데이터 로드 완료: {len(df):,}행")
 
     # 날짜 정리
     df["datadate"] = pd.to_datetime(df["datadate"], errors="coerce")
@@ -37,13 +37,13 @@ def GenerateReturns():
     df["ret"] = df.groupby(["gvkey", "iid"])["adj_price"].pct_change()
     df["ret"] = df["ret"].replace([np.inf, -np.inf], np.nan)
 
-    print("📈 월별 수익률 계산 완료")
+    print("월별 수익률 계산 완료")
 
     # -----------------------
     # (b) 시가총액 계산
     # -----------------------
     df["market_cap"] = df["prccm"] * df["cshtrm"]
-    print("💰 시가총액 계산 완료")
+    print("시가총액 계산 완료")
 
     # -----------------------
     # (c) 국가별 EW/VW 월별 수익률 계산
@@ -63,7 +63,7 @@ def GenerateReturns():
 
     vw = pd.DataFrame(vw_list, columns=["country", "datadate", "vw_return"])
 
-    # 🔹 타입 통일 (datetime)
+    # 타입 통일 (datetime)
     ew["datadate"] = pd.to_datetime(ew["datadate"])
     vw["datadate"] = pd.to_datetime(vw["datadate"])
 
@@ -74,10 +74,10 @@ def GenerateReturns():
     # 저장
     # -----------------------
     os.makedirs("data", exist_ok=True)
-    output_path = "data/outPutData.csv"  # ✅ 출력 파일명
+    output_path = "data/outputData.csv"  # 출력 파일명
     merged.to_csv(output_path, index=False)
 
-    print(f"💾 국가별 수익률 요약 저장 완료: {output_path}")
+    print(f"국가별 수익률 요약 저장 완료: {output_path}")
     print("\n미리보기:")
     print(merged.head())
 

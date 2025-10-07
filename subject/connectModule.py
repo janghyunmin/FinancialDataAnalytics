@@ -28,7 +28,7 @@ def WRDSConnection():
 # -----------------------
 def FindTables(conn):
     """comp 라이브러리 내 g_ 또는 sec 테이블 목록 확인"""
-    print("📦 Compustat(Global) 테이블 검색 중...")
+    print("Compustat(Global) 테이블 검색 중...")
 
     tables = conn.list_tables(library="comp")
     print(f"comp 라이브러리 테이블 수: {len(tables)}")

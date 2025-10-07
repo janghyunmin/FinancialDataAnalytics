@@ -13,8 +13,6 @@ ajpm : 조정된 가격 비율
 curcdm : 주가 및 거래량이 표시된 통화코드 (예:USD,JPY,EUR)
 country : 분석 편의를 위해 추가한 컬럼(상장 국가 코드)
 
----------------------------------------------------------------------------
-
 ------------------------------
 2. outputData.csv 컬럼 정의
 ------------------------------
@@ -22,3 +20,22 @@ country : 분석 편의를 위해 추가한 컬럼(상장 국가 코드)
 datadate : 관측 기준 월의 말일 (월별 데이터)
 ew_return : 균등가중 수익률(모든 기업의 수익률을 동일 가중치(1/n) 로 평균
 vw_return : 가치가중 수익률(기업별 시가총액 비중(weight = market cap/ total market cap) 으로 평균
+
+------------------------------
+3. outputDataCovid.csv 컬럼 정의
+------------------------------
+country : 분석 편의를 위해 추가한 컬럼(상장 국가 코드)
+datadate : 관측 기준 월의 말일 (월별 데이터)
+ew_return : 균등가중 수익률(모든 기업의 수익률을 동일 가중치(1/n) 로 평균
+vw_return : 가치가중 수익률(기업별 시가총액 비중(weight = market cap/ total market cap) 으로 평균
+period : 코로나19 기간 분류 (Crisis: 코로나 위기 기간 / Recovery: 코로나 이후 회복기간)
+
+------------------------------
+4. outputDataSummary.csv 컬럼 정의
+------------------------------
+country : 분석 편의를 위해 추가한 컬럼(상장 국가 코드)
+period : 시기 (Crisis/Recovery)
+ew_level_2 : ew_return 통계 항목 이름(mean, median, std 등)
+ew_ew_return : 해당 항목의 수치 값
+vw_level_2 : vw_return 통계 항목 이름
+vw_vw_return : 해당 항목 수치 값

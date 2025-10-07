@@ -19,7 +19,7 @@ def CheckDateRange(conn):
         FROM comp.g_secm
     """
     df = conn.raw_sql(query)
-    print("🗓️ 데이터 날짜 범위:")
+    print(" 데이터 날짜 범위:")
     print(df)
 
 
@@ -28,7 +28,7 @@ def CheckDateRange(conn):
 # -----------------------
 def GetCompustatData(conn):
     table_name = "g_secm"
-    print(f"📦 {table_name} 테이블에서 데이터 수집 중...")
+    print(f" {table_name} 테이블에서 데이터 수집 중...")
 
     start_date = "2020-01-01"
     end_date = "2025-09-30"
@@ -41,18 +41,18 @@ def GetCompustatData(conn):
     """
 
     df = conn.raw_sql(query)
-    print(f"✅ 원본 데이터: {len(df):,}행")
+    print(f" 원본 데이터: {len(df):,}행")
 
-    print("\n📊 국가 코드 샘플 (loc):")
+    print("\n 국가 코드 샘플 (loc):")
     print(df["loc"].value_counts().head(20))
 
-    print("\n📊 국가 코드 샘플 (fic):")
+    print("\n 국가 코드 샘플 (fic):")
     print(df["fic"].value_counts().head(20))
 
     # 국가 코드 통합
     df["country"] = df["loc"].fillna(df["fic"])
     df["country"] = df["country"].str.upper().str.strip()
-    df["country"] = df["country"].fillna("").astype(str)   # ✅ 추가!
+    df["country"] = df["country"].fillna("").astype(str)   # 추가
 
     # 느슨한 필터 (부분 일치)
     target_codes = ['GB', 'DE', 'JP', 'FR', 'AU', 'CN', 'IN', 'BR', 'ZA', 'TR']
@@ -66,7 +66,7 @@ def GetCompustatData(conn):
     os.makedirs("data", exist_ok=True)
     output_path = "data/collectData.csv"
     df.to_csv(output_path, index=False)
-    print(f"💾 CSV 저장 완료: {output_path}")
-    print(f"📈 최종 데이터 행 수: {len(df):,}")
+    print(f"CSV 저장 완료: {output_path}")
+    print(f"최종 데이터 행 수: {len(df):,}")
 
     return df

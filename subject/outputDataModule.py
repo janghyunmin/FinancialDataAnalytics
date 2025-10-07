@@ -1,9 +1,9 @@
-# outPutData.csv 파일 검증
+# outputData.csv 파일 검증
 
 import pandas as pd
 import numpy as np
 
-df = pd.read_csv("data/outPutData.csv")
+df = pd.read_csv("data/outputData.csv")
 print("행 수:", len(df))
 print("컬럼:", df.columns.tolist())
 print(df.head())
