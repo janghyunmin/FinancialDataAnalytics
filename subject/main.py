@@ -1,7 +1,8 @@
 # main.py
-import connectModule
-import collectModule
-import analyzeModule
+import connectModule # WRDS 연결 및 테이블 탐색 모듈
+import collectModule # Compustat 데이터 수집 모듈
+import analyzeModule # 수익률 계산 및 국가별 수익률 집계 모듈
+import periodModule # Covid-19 기간 정의 Module
 
 # -----------------------
 # 실행부
@@ -24,3 +25,8 @@ if __name__ == "__main__":
 
     # 4. 반환 생성 프로세스 Module
     analyzeModule.GenerateReturns()
+
+    # 5. COVID-19 기간 정의
+    # COVID-19 위기 기간 : 2020년 3월 ~ 2021년 12월
+    # 위기 후 회복 기간 : 2022년 1월 ~ 2024년 12월
+    periodModule.DefinePeriods()
