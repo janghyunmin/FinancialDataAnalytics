@@ -13,20 +13,20 @@
 ```markdown
 project
 ├── data
-│   ├── collectData.csv
-│   ├── outputData.csv
-│   ├── outputDataCovid.csv
-│   └── outputDataSummary.csv
+│   ├── collectData.csv ✅ 데이터 수집 완료 (collectData.csv)  
+│   ├── outputData.csv ✅ 국가별 수익률 계산 완료 (outputData.csv)  
+│   ├── outputDataCovid.csv ✅ 기간 라벨 정의 완료 (outputDataCovid.csv)  
+│   └── outputDataSummary.csv ✅ 국가·기간별 기술통계 요약 완료 (outputDataSummary.csv)  
 │   
 ├── subject
     ├── main.py
-    ├── connectModule.py
-    ├── collectModule.py
-    ├── analyzeModule.py
-    ├── outputDataModule.py
-    ├── periodModule.py
-    ├── summaryModule.py
-    └── comparisonModule.py
+    ├── connectModule.py ✅ WRDS 연결 및 데이터 수집 (connectModule, collectModule)
+    ├── collectModule.py ✅ WRDS 연결 및 데이터 수집 (connectModule, collectModule)
+    ├── analyzeModule.py ✅ 국가별 수익률 계산 및 EW/VW 집계 (analyzeModule)
+    ├── comparisonModule.py ✅ 선진국 vs 신흥국 비교 분석 (comparisonModule)
+    ├── periodModule.py ✅ Covid-19 기간 라벨 정의 (periodModule)
+    ├── summaryModule.py ✅ 국가·기간별 통계 요약 (summaryModule)
+    └── outputDataModule.py ✅ outputData.csv 파일 검증용
 ```
 <br>
 <h2> 🚀 전체 워크플로우 요약 </h2>
