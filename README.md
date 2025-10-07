@@ -9,9 +9,23 @@
 
 <h1> 📂 프로젝트 구조 </h1>
 <br>
+project
+├── data
+│   ├── collectData.csv
+│   ├── outputData.csv
+│   ├── outputDataCovid.csv
+│   └── outputDataSummary.csv
+│   
+├── subject
+    ├── main.py
+    ├── connectModule.py
+    ├── collectModule.py
+    ├── analyzeModule.py
+    ├── outputDataModule.py
+    ├── periodModule.py
+    ├── summaryModule.py
+    └── comparisonModule.py
 
-
--------
 <h2> 🚀 전체 워크플로우 요약 </h2>
 <h3> ✅ 1. WRDS 연결 (connectModule.py) </h3>
 
