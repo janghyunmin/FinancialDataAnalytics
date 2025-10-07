@@ -1,29 +1,20 @@
 # FinancialDataAnalytics
 
-📘 금융데이터분석 – Homework 1
+<h1> 📘 금융데이터분석 – Homework 1 </h1>
 
 주제: Global Compustat 데이터를 활용한 국가별 월별 수익률 분석 (2020–2025)
 도구: Python + WRDS + pandas
 목표: Global Compustat 데이터를 이용해 기업별·국가별 월간 주식 수익률을 생성하고,
 선진국과 신흥국 간의 수익률 특성을 비교한다.
 
---------------------------------------------------------------------------------
-FinancialDataAnalytics/
-│
-├── subject/
-│   ├── main.py
-│   ├── connectModule.py
-│   ├── collectModule.py
-│   ├── analyzeModule.py
-│   └── data/
-│       ├── collectData.csv     ← Compustat 원본 월별 데이터
-│       └── outPutData.csv      ← 국가별 EW/VW 수익률 결과
-│
-└── README.md
---------------------------------------------------------------------------------
+<h1> 📂 프로젝트 구조 </h1>
+<br>
+<img width="520" height="306" alt="image" src="https://github.com/user-attachments/assets/b52e56e5-cd41-4eda-b9e1-06bfaeb22ae7" />
 
-🚀 전체 워크플로우 요약
-✅ 1. WRDS 연결 (connectModule.py)
+
+-------
+<h2> 🚀 전체 워크플로우 요약 </h2>
+<h3> ✅ 1. WRDS 연결 (connectModule.py) </h3>
 
 1. wrds.Connection()을 통해 WRDS Global Compustat 서버에 연결
 2. Compustat 라이브러리 내 테이블 목록을 확인 (g_secm 사용)
@@ -32,7 +23,7 @@ FinancialDataAnalytics/
 conn = WRDSConnection()        # WRDS 연결
 FindTables(conn)               # Compustat 테이블 목록 확인
 
-✅ 2. 데이터 수집 (collectModule.py)
+<h3> ✅ 2. 데이터 수집 (collectModule.py) </h3>
 
 comp.g_secm 테이블에서 기업별 월말 데이터를 불러옴
 
@@ -59,7 +50,8 @@ comp.g_secm 테이블에서 기업별 월말 데이터를 불러옴
 <img width="579" height="75" alt="image" src="https://github.com/user-attachments/assets/aa7330b0-6300-48e1-90d2-3b73aaadbf23" />
 <img width="807" height="208" alt="image" src="https://github.com/user-attachments/assets/48b30729-900c-4819-a44f-039bd0fc7b1f" />
 
-# 결과 파일: data/outPutData.csv
+<h3>결과 파일: data/outPutData.csv</h3>
+
 | country | datadate   | ew_return | vw_return |
 | ------- | ---------- | --------- | --------- |
 | JPN     | 2020-03-31 | -0.045    | -0.042    |
