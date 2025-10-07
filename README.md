@@ -50,11 +50,33 @@ comp.g_secm 테이블에서 기업별 월말 데이터를 불러옴
 <img width="579" height="75" alt="image" src="https://github.com/user-attachments/assets/aa7330b0-6300-48e1-90d2-3b73aaadbf23" />
 <img width="807" height="208" alt="image" src="https://github.com/user-attachments/assets/48b30729-900c-4819-a44f-039bd0fc7b1f" />
 
-<h3>결과 파일: data/outPutData.csv</h3>
+<h3> 결과 파일: data/outPutData.csv</h3>
 
 | country | datadate   | ew_return | vw_return |
 | ------- | ---------- | --------- | --------- |
 | JPN     | 2020-03-31 | -0.045    | -0.042    |
 | GBR     | 2020-03-31 | -0.031    | -0.028    |
 | AUS     | 2020-03-31 | -0.055    | -0.059    |
+
+
+<h3> ✅ 4. 기간 정의 (Problem 3 – Period Definition) </h3>
+
+목표:
+분석 샘플을 두 개의 하위 기간으로 구분하여,
+코로나19 위기 시기와 이후 회복 시기의 시장 움직임을 비교할 수 있도록 period 컬럼을 생성합니다.
+
+| 구분                                           | 기간                   | 라벨           |
+| -------------------------------------------- | -------------------- | ------------ |
+| **COVID-19 위기 기간 (Crisis Period)**           | 2020년 3월 ~ 2021년 12월 | `"Crisis"`   |
+| **위기 후 회복 기간 (Post-Crisis Recovery Period)** | 2022년 1월 ~ 2024년 12월 | `"Recovery"` |
+
+✅ 데이터 로드 완료: 994행
+💾 기간 라벨 추가 완료: data/outPutData_withPeriod.csv
+
+📊 기간별 데이터 분포:
+Recovery    537
+Crisis      308
+Other       149
+Name: count, dtype: int64
+
 
