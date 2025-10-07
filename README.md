@@ -9,6 +9,8 @@
 
 <h1> 📂 프로젝트 구조 </h1>
 <br>
+
+```markdown
 project
 ├── data
 │   ├── collectData.csv
@@ -25,7 +27,8 @@ project
     ├── periodModule.py
     ├── summaryModule.py
     └── comparisonModule.py
-
+```
+<br>
 <h2> 🚀 전체 워크플로우 요약 </h2>
 <h3> ✅ 1. WRDS 연결 (connectModule.py) </h3>
 
