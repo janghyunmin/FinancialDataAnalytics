@@ -9,7 +9,6 @@
 
 <h1> 📂 프로젝트 구조 </h1>
 <br>
-<img width="520" height="306" alt="image" src="https://github.com/user-attachments/assets/b52e56e5-cd41-4eda-b9e1-06bfaeb22ae7" />
 
 
 -------
@@ -78,5 +77,15 @@ Recovery    537
 Crisis      308
 Other       149
 Name: count, dtype: int64
+
+<h3> ✅ 5. 국가 및 기간별 요약 통계 (Problem 4 – Summary Statistics by Country and Period) </h3>
+
+목표:
+각 국가(country)와 기간(period: Crisis / Recovery)별로
+수익률(ew_return, vw_return)의 분포 특성을 통계적으로 요약한다.
+
+이를 통해 코로나19 위기기와 회복기 사이의 수익률 수준, 변동성, 분포 특성의 차이를 비교한다.
+<img width="668" height="406" alt="image" src="https://github.com/user-attachments/assets/c7b7c780-33c9-4463-9929-bdc84fde94d8" />
+<img width="660" height="281" alt="image" src="https://github.com/user-attachments/assets/b7ab5abd-8bea-4242-a514-a209275a0d79" />
 
 
