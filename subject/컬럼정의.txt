@@ -39,3 +39,17 @@ ew_level_2 : ew_return 통계 항목 이름(mean, median, std 등)
 ew_ew_return : 해당 항목의 수치 값
 vw_level_2 : vw_return 통계 항목 이름
 vw_vw_return : 해당 항목 수치 값
+
+------------------------------
+5. comparison_developed_vs_emerging.csv 컬럼 정의
+------------------------------
+group : 국가 그룹 구분(Developed / Emerging)
+period : 시기(Crisis = 코로나19 위기, Recovery = 위기 이후 회복기)
+ew_mean :  동일가중 평균 수익률
+ew_median : 동일가중 중앙값
+ew_std : 동일가중 표준편차 (변동성)
+ew_min / ew_max : 수익률의 최소/최대값
+ew_skew : 왜도 (분포 비대칭성)
+ew_kurtosis : 첨도(꼬리 두꺼움,극단값 정도)
+vw_mean ~ vw_kurtosis : 가치가중(Value Weighted) 수익률에 대한 동일한 통계치
+

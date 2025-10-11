@@ -1,84 +1,59 @@
-"""
-문제 2. 반환 생성 프로세스
-(a) 수집된 데이터를 사용하여 기업 수준의 월간 주식 수익률을 생성합니다.
-(b) 기업 수준의 시가총액을 계산합니다.
-(c) 국가별 월간 수익률 구성:
-• 균등 가중 (EW) 수익률
-• 가치 가중(VW) 수익률(기업 시가총액을 가중치로 사용).
-"""
-# -----------------------
-# 문제 2: Return Generating Process
-# -----------------------
+# ---------------------------------------
+# 📈 문제 2. 수익률 생성 및 국가별 집계 (정상화 버전)
+# ---------------------------------------
 
-# analyzeModule.py
 import pandas as pd
 import numpy as np
 import os
 
 def GenerateReturns():
-    # -----------------------
-    # 1) 데이터 불러오기
-    # -----------------------
-    input_path = "data/collectData.csv"   # 입력 파일명
+    input_path = "data/collectData.csv"
+    output_path = "data/outputData.csv"
+
+    print("📥 데이터 불러오는 중...")
     df = pd.read_csv(input_path)
-    print(f"원본 데이터 로드 완료: {len(df):,}행")
 
-    # 날짜 정리
+    # 날짜 변환
     df["datadate"] = pd.to_datetime(df["datadate"], errors="coerce")
-    df = df.sort_values(["gvkey", "iid", "datadate"])
 
-    # -----------------------
-    # (a) 조정가격 및 월별 수익률 계산
-    # -----------------------
-    df["adj_price"] = df["prccm"] * df["ajpm"] / df["ajexm"]
-    df["adj_price"] = df["adj_price"].replace([np.inf, -np.inf, 0], np.nan)
+    # ⚙️ 조정주가 계산
+    # 일부 데이터는 ajexm / ajpm이 매우 커서 비정상적이므로 clip 적용
+    df["ajexm"] = df["ajexm"].replace(0, np.nan).fillna(1)
+    df["ajpm"] = df["ajpm"].replace(0, np.nan).fillna(1)
 
-    # 월별 수익률 계산
-    df["ret"] = df.groupby(["gvkey", "iid"])["adj_price"].pct_change()
-    df["ret"] = df["ret"].replace([np.inf, -np.inf], np.nan)
+    df["adj_price"] = df["prccm"] * (df["ajpm"] / df["ajexm"])
 
-    print("월별 수익률 계산 완료")
+    # ⚠️ 수익률 계산 (pct_change → 100배 방지)
+    df = df.sort_values(["gvkey", "datadate"])
+    df["return"] = df.groupby("gvkey")["adj_price"].pct_change()
 
-    # -----------------------
-    # (b) 시가총액 계산
-    # -----------------------
-    df["market_cap"] = df["prccm"] * df["cshtrm"]
-    print("시가총액 계산 완료")
+    # 수익률이 너무 큰 이상치 제거
+    df.loc[df["return"].abs() > 1, "return"] = np.nan
 
-    # -----------------------
-    # (c) 국가별 EW/VW 월별 수익률 계산
-    # -----------------------
-    df = df.dropna(subset=["ret", "market_cap", "country"])
+    # 시가총액 계산
+    df["market_cap"] = df["adj_price"] * df["cshtrm"]
 
-    # 균등가중 수익률
-    ew = df.groupby(["country", "datadate"])["ret"].mean().reset_index()
-    ew = ew.rename(columns={"ret": "ew_return"})
+    # 🧹 결측치 제거
+    df = df.dropna(subset=["return", "market_cap", "country"])
 
-    # 가치가중 수익률
-    vw_list = []
-    for (country, date), group in df.groupby(["country", "datadate"]):
-        if group["market_cap"].sum() > 0:
-            vw_ret = np.average(group["ret"], weights=group["market_cap"])
-            vw_list.append([country, date, vw_ret])
+    # ------------------------------
+    # 국가별 월별 수익률 집계
+    # ------------------------------
+    ew = df.groupby(["country", "datadate"])["return"].mean().reset_index(name="ew_return")
+    vw = df.groupby(["country", "datadate"]).apply(
+        lambda x: np.average(x["return"], weights=x["market_cap"])
+    ).reset_index(name="vw_return")
 
-    vw = pd.DataFrame(vw_list, columns=["country", "datadate", "vw_return"])
+    # ------------------------------
+    # 병합 및 저장
+    # ------------------------------
+    country_returns = pd.merge(ew, vw, on=["country", "datadate"], how="inner")
 
-    # 타입 통일 (datetime)
-    ew["datadate"] = pd.to_datetime(ew["datadate"])
-    vw["datadate"] = pd.to_datetime(vw["datadate"])
-
-    # 병합
-    merged = pd.merge(ew, vw, on=["country", "datadate"], how="outer")
-
-    # -----------------------
-    # 저장
-    # -----------------------
     os.makedirs("data", exist_ok=True)
-    output_path = "data/outputData.csv"  # 출력 파일명
-    merged.to_csv(output_path, index=False)
+    country_returns.to_csv(output_path, index=False)
+    print(f"💾 국가별 수익률 데이터 저장 완료: {output_path}")
 
-    print(f"국가별 수익률 요약 저장 완료: {output_path}")
-    print("\n미리보기:")
-    print(merged.head())
+    print("\n✅ 미리보기:")
+    print(country_returns.head(10))
 
-    return merged
+    return country_returns

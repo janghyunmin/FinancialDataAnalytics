@@ -1,5 +1,5 @@
 # ---------------------------------------
-# 국가 및 기간별 수익률 기술통계 요약
+# 📊 국가 및 기간별 수익률 요약 통계 계산 (Problem 4)
 # ---------------------------------------
 
 import pandas as pd
@@ -7,78 +7,70 @@ import numpy as np
 import os
 
 def SummaryStatistics():
-    input_path = "data/outputDataCovid.csv"
+    input_path = "data/outputDataCovid.csv"   # 기간 구분된 수익률 파일
     output_path = "data/outputDataSummary.csv"
 
-    # 1. 데이터 로드
+    print("📥 데이터 불러오는 중...")
     df = pd.read_csv(input_path)
-    df["datadate"] = pd.to_datetime(df["datadate"])
-    print(f"✅ 데이터 로드 완료: {len(df):,}행")
 
-    # 2. 분석 대상 필터링 (Crisis / Recovery만)
-    df = df[df["period"].isin(["Crisis", "Recovery"])]
+    # datadate를 날짜형으로 변환
+    df["datadate"] = pd.to_datetime(df["datadate"], errors="coerce")
 
-    # 3. 그룹별 통계 계산 함수 정의
-    def calc_stats(x):
-        # 결측 제거
-        x = x.dropna()
+    # 🧹 결측치 제거 (수익률 없으면 분석 불가)
+    df = df.dropna(subset=["ew_return", "vw_return", "country", "period"])
 
-        if len(x) < 2:
-            return pd.Series({
-                "mean": np.nan,
-                "median": np.nan,
-                "std": np.nan,
-                "min": np.nan,
-                "max": np.nan,
-                "autocorr": np.nan,
-                "skew": np.nan,
-                "excess_kurtosis": np.nan
-            })
+    print(f"✅ 유효 데이터 수: {len(df):,}")
 
-        return pd.Series({
-            "mean": np.mean(x),
-            "median": np.median(x),
-            "std": np.std(x, ddof=1),
-            "min": np.min(x),
-            "max": np.max(x),
-            "autocorr": x.autocorr(lag=1),
-            "skew": x.skew(),
-            "excess_kurtosis": x.kurt()  # pandas.kurt() = excess kurtosis
-        })
+    # ------------------------------
+    # 그룹 설정 (국가 × 기간)
+    # ------------------------------
+    grouped = df.groupby(["country", "period"])
 
-    # 4. 국가 & 기간별 요약 계산 (EW / VW 각각)
-    grouped_ew = df.groupby(["country", "period"])["ew_return"].apply(calc_stats)
-    grouped_vw = df.groupby(["country", "period"])["vw_return"].apply(calc_stats)
-
-    # 5. MultiIndex 풀기
-    ew_df = grouped_ew.reset_index()
-    vw_df = grouped_vw.reset_index()
-
-    # 6. 컬럼명 구분 추가
-    ew_df = ew_df.add_prefix("ew_")
-    vw_df = vw_df.add_prefix("vw_")
-
-    # 7. 병합
-    merged = pd.merge(
-        ew_df,
-        vw_df,
-        left_on=["ew_country", "ew_period"],
-        right_on=["vw_country", "vw_period"],
-        suffixes=("_ew", "_vw")
+    # ------------------------------
+    # ① 동일가중(EW) 수익률 통계
+    # ------------------------------
+    ew_summary = grouped["ew_return"].agg(
+        mean="mean",
+        median="median",
+        std="std",
+        min="min",
+        max="max",
+        skew="skew"
     )
 
-    # 8. 불필요한 중복 컬럼 제거 및 정리
-    merged = merged.rename(columns={
-        "ew_country": "country",
-        "ew_period": "period"
-    }).drop(columns=["vw_country", "vw_period"])
+    # 초과첨도(kurtosis) + 자기상관계수(autocorr)
+    ew_summary["excess_kurtosis"] = grouped["ew_return"].apply(pd.Series.kurt)
+    ew_summary["autocorr"] = grouped["ew_return"].apply(lambda x: x.autocorr(lag=1))
 
-    # 9. 저장
+    # prefix 추가
+    ew_summary = ew_summary.add_prefix("ew_")
+
+    # ------------------------------
+    # ② 가치가중(VW) 수익률 통계
+    # ------------------------------
+    vw_summary = grouped["vw_return"].agg(
+        mean="mean",
+        median="median",
+        std="std",
+        min="min",
+        max="max",
+        skew="skew"
+    )
+
+    vw_summary["excess_kurtosis"] = grouped["vw_return"].apply(pd.Series.kurt)
+    vw_summary["autocorr"] = grouped["vw_return"].apply(lambda x: x.autocorr(lag=1))
+    vw_summary = vw_summary.add_prefix("vw_")
+
+    # ------------------------------
+    # ③ 결과 병합 및 저장
+    # ------------------------------
+    summary = pd.concat([ew_summary, vw_summary], axis=1).reset_index()
+
     os.makedirs("data", exist_ok=True)
-    merged.to_csv(output_path, index=False)
-    print(f"국가 및 기간별 기술통계 저장 완료: {output_path}")
+    summary.to_csv(output_path, index=False)
+    print(f"💾 국가 및 기간별 수익률 통계 저장 완료: {output_path}")
 
-    print("\n 요약 미리보기:")
-    print(merged.head())
+    print("\n📊 요약 미리보기:")
+    print(summary.head())
 
-    return merged
+    return summary

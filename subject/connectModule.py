@@ -1,14 +1,13 @@
-# connectModule.py
 import wrds
 from dotenv import load_dotenv
 import os
+import pandas as pd
 
 # -----------------------
-# WRDS 연결 함수
+# 1) WRDS 연결
 # -----------------------
 def WRDSConnection():
-    """WRDS 계정으로 연결 후 connection 객체 반환"""
-    print("WRDS Module Running...")
+    print("🔗 WRDS Connection Module Running...")
 
     load_dotenv()
     wrds_user = os.getenv("WRDS_USER", None)
@@ -19,23 +18,27 @@ def WRDSConnection():
     else:
         conn = wrds.Connection()
 
-    print("✅ WRDS 연결 완료.")
+    print("✅ WRDS 연결 완료")
     return conn
 
 
 # -----------------------
-# Compustat 테이블 탐색 함수
+# 2) 테이블 목록 확인
 # -----------------------
 def FindTables(conn):
-    """comp 라이브러리 내 g_ 또는 sec 테이블 목록 확인"""
     print("Compustat(Global) 테이블 검색 중...")
 
     tables = conn.list_tables(library="comp")
     print(f"comp 라이브러리 테이블 수: {len(tables)}")
 
+    query = "SELECT * FROM comp.g_secm LIMIT 10"
+    df = conn.raw_sql(query)
+    print(" g_secm 샘플 10행:")
+    print(df.head())
+    print("\n 컬럼 목록:")
+    print(df.columns.tolist())
+
     cand = [t for t in tables if ("g_" in t or "sec" in t)]
-    print("🔍 g_ 또는 sec가 포함된 테이블 목록:")
+    print("\n🔍 g_ 또는 sec가 포함된 테이블 목록:")
     for t in cand:
         print("  -", t)
-
-    return cand
