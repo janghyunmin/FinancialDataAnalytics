@@ -53,3 +53,8 @@ ew_skew : 왜도 (분포 비대칭성)
 ew_kurtosis : 첨도(꼬리 두꺼움,극단값 정도)
 vw_mean ~ vw_kurtosis : 가치가중(Value Weighted) 수익률에 대한 동일한 통계치
 
+------------------------------
+correlation_crisis.csv # Crisis 기간 국가 간 EW 수익률 상관행렬
+correlation_recovery.csv # Recovery 기간 국가 간 EW 수익률 상관 행렬
+correlation_summary.csv # Developed vs Emerging 평균 상관계수 비교표
+------------------------------
