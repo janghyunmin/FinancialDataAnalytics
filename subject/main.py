@@ -34,6 +34,8 @@ if __name__ == "__main__":
     correlationModule.AnalyzeCorrelation()
 
     # 결과 확인
-    presentationModule.PlotRepresentativeHistograms()
+    presentationModule.PlotRepresentativeHistograms() # 대표 선진국·신흥국 수익률 히스토그램
+    presentationModule.SaveDescriptiveSummary() # 기술통계 요약표 저장
+    presentationModule.SaveDiscussionSummary() # 결과 해석 텍스트 요약
 
     print("\n전체 파이프라인 완료 (데이터 수집 → 수익률 생성 → 기간 정의 → 요약 → 비교분석)")

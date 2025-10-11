@@ -1,0 +1,5 @@
+﻿group,period,ew_mean,ew_std,ew_skew,ew_excess_kurtosis
+Developed,Crisis,-0.0063,0.0775,-0.5268,8.0616
+Developed,Recovery,-0.0218,0.028,-0.4179,0.9117
+Emerging,Crisis,-0.0368,0.087,-2.0946,9.0136
+Emerging,Recovery,-0.051,0.0386,-0.2774,0.1085
