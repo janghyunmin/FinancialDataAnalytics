@@ -51,15 +51,9 @@ def GetCompustatData(conn):
     # -----------------------
     # 국가 코드 정리
     # -----------------------
-<<<<<<< Updated upstream
     print("\n 국가 코드 샘플 (loc):")
     print(df["loc"].value_counts().head(15))
     print("\n 국가 코드 샘플 (fic):")
-=======
-    print("\n📊 국가 코드 샘플 (loc):")
-    print(df["loc"].value_counts().head(15))
-    print("\n📊 국가 코드 샘플 (fic):")
->>>>>>> Stashed changes
     print(df["fic"].value_counts().head(15))
 
     # loc > fic 순서로 국가코드 채우기
@@ -85,14 +79,8 @@ def GetCompustatData(conn):
     output_path = "data/collectData.csv"
     df.to_csv(output_path, index=False)
 
-<<<<<<< Updated upstream
     print(f"CSV 저장 완료: {output_path}")
     print(f"최종 데이터 행 수: {len(df):,}")
     print(f"데이터 기간: {df['datadate'].min().date()} ~ {df['datadate'].max().date()}")
-=======
-    print(f"💾 CSV 저장 완료: {output_path}")
-    print(f"📈 최종 데이터 행 수: {len(df):,}")
-    print(f"📆 데이터 기간: {df['datadate'].min().date()} ~ {df['datadate'].max().date()}")
->>>>>>> Stashed changes
 
     return df
