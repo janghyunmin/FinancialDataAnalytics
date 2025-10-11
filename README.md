@@ -52,13 +52,6 @@ project
 | curcdm      | 통화코드                   |
 | country     | 상장국가 코드 (loc/fic 기준)   |
 
-<<<<<<< Updated upstream
-💾 <b>저장:</b> data/collectData.csv <br>
-=======
-기간: 2020-03-01 ~ 2024-12-31
-결측치 제거 및 전처리 후 data/collectData.csv로 저장
->>>>>>> Stashed changes
-
 <hr> <h2>🧮 Problem 2. Return Generating Process (수익률 생성)</h2>
 
 <b>목표:</b> <br>
@@ -228,6 +221,91 @@ Crisis = 코로나19 위기기, Recovery = 위기 후 회복기 <br>
 > 회복기에는 상관성이 완화되고, 각 시장은 독립적인 회복 흐름을 보였다. <br>
 > 이는 글로벌 유동성과 위험회피 성향이  
 > 시장 간 연계성의 변화를 주도했음을 시사한다. <br>
+
+<h2>📊 Problem 7(b) – Developed vs Emerging Markets Histogram Analysis</h2>
+
+<h3>🇯🇵 Developed Market: Japan (JPN)</h3>
+<ul>
+<li><b>위기(Crisis) 기간</b> 동안 수익률 분포가 좌측(음의 구간)으로 치우쳐 있음 → 코로나 충격으로 인한 전반적 하락 반영.</li>
+<li><b>분포 폭이 좁고 첨도(Kurtosis)가 높음</b> → 변동성이 낮고 극단적 손실이 적은 안정적 시장 구조를 의미함.</li>
+<li><b>회복(Recovery) 기간</b>에는 분포 중심이 0 근처 혹은 약간 양(+)으로 이동 → 점진적인 회복세 관찰.</li>
+</ul>
+
+📈 <b>요약:</b> 일본은 위기 시에도 변동성이 제한적이며, 회복기에는 완만하지만 안정적인 수익률 개선을 보임.
+
+---
+
+<h3>🇮🇳 Emerging Market: India (IND)</h3>
+<ul>
+<li><b>위기(Crisis) 기간</b>에는 음의 수익률이 자주 발생하며, 분포 폭이 넓음 → 시장 변동성 및 불확실성 확대.</li>
+<li><b>회복(Recovery) 기간</b>에는 분포가 우측으로 이동하고, 양(+) 꼬리가 길게 나타남 → 급등 구간 빈번, 리스크-리턴 구조 뚜렷.</li>
+</ul>
+
+📈 <b>요약:</b> 인도는 하이 리스크–하이 리턴 구조로, 위기에는 급락하지만 회복기에는 빠른 반등세를 보임.
+
+---
+
+<h2>🔍 그룹별 비교 요약</h2>
+
+<table>
+<thead>
+<tr>
+<th>구분</th>
+<th>위기 (Crisis)</th>
+<th>회복 (Recovery)</th>
+<th>특징</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><b>선진국 (JPN)</b></td>
+<td>평균 ↓, 변동성 ↓</td>
+<td>평균 ↑, 변동성 ↓</td>
+<td>안정적, 점진적 회복</td>
+</tr>
+<tr>
+<td><b>신흥국 (IND)</b></td>
+<td>평균 ↓, 변동성 ↑</td>
+<td>평균 ↑, 변동성 ↑</td>
+<td>변동 크지만 회복력 강함</td>
+</tr>
+</tbody>
+</table>
+
+---
+
+<h2>📘 종합 결론</h2>
+
+<ul>
+<li>코로나19 위기 시기에는 양 그룹 모두 음의 수익률을 기록했으나, <b>신흥국의 낙폭과 변동성</b>이 훨씬 더 큼.</li>
+<li>회복 국면에서는 <b>신흥국이 더 빠른 반등세</b>를 보였으며, <b>높은 기대수익률</b> 가능성이 존재.</li>
+<li>즉, <b>위기 시기에는 안전자산(선진국) 선호</b>, <b>회복 시기에는 리스크테이킹(신흥국)</b>이 뚜렷하게 나타남.</li>
+</ul>
+
+---
+
+<h2>🖼️ 시각화 결과</h2>
+
+- <b>Developed (JPN)</b> 히스토그램: figures/hist_JPN_period_fixed.png  
+- <b>Emerging (IND)</b> 히스토그램: figures/hist_IND_period_fixed.png  
+
+<h2>📊 Developed vs Emerging Markets – Histogram</h2>
+
+**🇯🇵 Developed (Japan)**  
+![Developed (JPN)](figures/hist_JPN_period_fixed.png)
+
+**🇮🇳 Emerging (India)**  
+![Emerging (IND)](figures/hist_IND_period_fixed.png)
+
+---
+
+<h2>💾 파일 경로 요약</h2>
+
+| 파일명 | 설명 |
+|--------|------|
+| `figures/hist_JPN_period_fixed.png` | 일본(선진국) 월별 수익률 분포 (Crisis vs Recovery) |
+| `figures/hist_IND_period_fixed.png` | 인도(신흥국) 월별 수익률 분포 (Crisis vs Recovery) |
+
 
 
 
