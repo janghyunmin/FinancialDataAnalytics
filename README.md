@@ -52,7 +52,12 @@ project
 | curcdm      | 통화코드                   |
 | country     | 상장국가 코드 (loc/fic 기준)   |
 
+<<<<<<< Updated upstream
 💾 <b>저장:</b> data/collectData.csv <br>
+=======
+기간: 2020-03-01 ~ 2024-12-31
+결측치 제거 및 전처리 후 data/collectData.csv로 저장
+>>>>>>> Stashed changes
 
 <hr> <h2>🧮 Problem 2. Return Generating Process (수익률 생성)</h2>
 
