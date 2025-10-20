@@ -35,7 +35,12 @@ project/
 │   ├── comparisonModule.py                 ✅ Developed vs Emerging 비교
 │   ├── correlationModule.py                ✅ 상관행렬 및 금융전이 분석
 │   ├── presentationModule.py               ✅ 결과 요약·시각화·해석 (Problem 7)
+│   ├── checkPipeLineIntegrity.py           ✅ 파이프라인 무결성 점검 (E2E 검증)
+│   ├── outputDataModule.py                 ✅ 수익률 데이터 검증(간이 확인용)
 │   └── main.py                             ✅ 전체 파이프라인 실행
+│
+├── 컬럼정의.txt                            ✅ 각 데이터 파일별 컬럼 설명
+└── README.md                              ✅ 프로젝트 개요 및 설명 파일
 </pre>
 
 <hr>
@@ -171,6 +176,104 @@ Recovery 단계에서 평균 수익률이 빠르게 반등하나 분포의 안�
 이는 금융시장의 구조적 안정성과 정보 비대칭 차이에 기인한 결과로 해석됨.
 
 <hr>
+
+
+
+
+---
+
+## 🧩 보조 모듈
+
+| 모듈명 | 기능 | 출력 |
+|--------|-------|-------|
+| checkPipeLineIntegrity.py | 각 단계별 출력 파일 존재·값 범위 검증 | 콘솔 로그 |
+| outputDataModule.py | `outputData.csv` 기초 검증 (기간·컬럼·통계) | 콘솔 로그 |
+
+---
+
+## 📄 컬럼 정의 (Column Definitions)
+
+### **1️⃣ collectData.csv**
+| 컬럼명 | 설명 |
+|--------|------|
+| `gvkey` | 기업 고유 식별자 (Global Compustat 기준) |
+| `iid` | 증권 식별자 (보통주 = '01') |
+| `datadate` | 관측 기준 월의 말일 (월별 데이터) |
+| `fic` | 본사 법인 등록 국가 코드 (ISO 2자리) |
+| `loc` | 상장 거래소 국가 코드 (ISO 2자리) |
+| `prccm` | 월말 주가 (현지 통화 단위) |
+| `csho` | 발행주식수 (Shares Outstanding) |
+| `ajexm` | 주식 분할 및 배당 조정계수 |
+| `ajpm` | 조정된 가격 비율 |
+| `curcdm` | 통화 코드 (예: USD, JPY, EUR) |
+| `country` | 상장 국가 코드 (fic 또는 loc 기준, 분석용 추가 컬럼) |
+
+---
+
+### **2️⃣ outputData.csv**
+| 컬럼명 | 설명 |
+|--------|------|
+| `country` | 상장 국가 코드 (2자리) |
+| `datadate` | 관측 기준 월의 말일 (월별 데이터) |
+| `ew_return` | 동일가중 수익률 (모든 기업의 수익률 단순 평균) |
+| `vw_return` | 가치가중 수익률 (시가총액 비중으로 가중 평균) |
+| `market_cap` | 기업 시가총액 (adj_price × csho) |
+| `adj_price` | 조정 주가 (prccm × ajpm / ajexm) |
+
+---
+
+### **3️⃣ outputDataCovid.csv**
+| 컬럼명 | 설명 |
+|--------|------|
+| `country` | 상장 국가 코드 |
+| `datadate` | 관측 기준 월의 말일 |
+| `ew_return` | 동일가중 수익률 |
+| `vw_return` | 가치가중 수익률 |
+| `period` | 코로나19 기간 구분 (Crisis = 2020.03–2021.12 / Recovery = 2022.01–2024.12) |
+
+---
+
+### **4️⃣ outputDataSummary.csv**
+| 컬럼명 | 설명 |
+|--------|------|
+| `country` | 상장 국가 코드 |
+| `period` | 시기 (Crisis / Recovery) |
+| `ew_mean` | 동일가중 수익률 평균 |
+| `ew_median` | 동일가중 수익률 중앙값 |
+| `ew_std` | 동일가중 표준편차 |
+| `ew_min` / `ew_max` | 동일가중 최소 / 최대 수익률 |
+| `ew_skew` | 동일가중 왜도 (분포 비대칭성) |
+| `ew_excess_kurtosis` | 동일가중 초과첨도 (fat-tail 정도) |
+| `ew_autocorr` | 동일가중 1차 자기상관계수 |
+| `vw_mean ~ vw_autocorr` | 가치가중 수익률에 대한 동일한 통계치 |
+
+---
+
+### **5️⃣ comparison_developed_vs_emerging.csv**
+| 컬럼명 | 설명 |
+|--------|------|
+| `group` | 국가 그룹 (Developed / Emerging) |
+| `period` | 시기 (Crisis / Recovery) |
+| `ew_mean` | 동일가중 평균 수익률 |
+| `ew_std` | 동일가중 표준편차 (변동성) |
+| `ew_skew` | 동일가중 왜도 |
+| `ew_excess_kurtosis` | 동일가중 초과첨도 |
+| `vw_mean` | 가치가중 평균 수익률 |
+| `vw_std` | 가치가중 표준편차 |
+| `vw_skew` | 가치가중 왜도 |
+| `vw_excess_kurtosis` | 가치가중 초과첨도 |
+
+---
+
+### **6️⃣ 상관분석 결과 파일**
+| 파일명 | 설명 |
+|--------|------|
+| `correlation_crisis.csv` | Crisis 기간 국가 간 EW 수익률 상관행렬 |
+| `correlation_recovery.csv` | Recovery 기간 국가 간 EW 수익률 상관행렬 |
+| `correlation_summary.csv` | Developed vs Emerging 평균 상관계수 요약표 |
+
+---
+
 
 <h2>🧩 실행 방법</h2>
 
