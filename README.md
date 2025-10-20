@@ -1,6 +1,6 @@
-<h1>📘 FinancialDataAnalytics – Homework 1</h1>
+<h1>📘 Financial Data Analytics – Homework 1</h1>
 
-> <b>주제:</b> Global Compustat 데이터를 활용한 국가별 월별 수익률 분석 (2020–2025) <br>
+> <b>주제:</b> Global Compustat 데이터를 활용한 국가별 월별 수익률 분석 (2020–2024) <br>
 > <b>도구:</b> Python + WRDS + pandas <br>
 > <b>목표:</b> 기업별·국가별 월간 주식 수익률을 생성하고, 선진국과 신흥국 간 수익률 특성을 비교 및 시각화한다. <br>
 
@@ -12,7 +12,7 @@
 project/
 ├── data/
 │   ├── collectData.csv                     ✅ 데이터 수집 결과 (WRDS → CSV)
-│   ├── outPutData.csv                      ✅ 국가별 수익률 계산 결과
+│   ├── outputData.csv                      ✅ 국가별 수익률 계산 결과
 │   ├── outputDataCovid.csv                 ✅ Covid-19 기간 라벨 추가
 │   ├── outputDataSummary.csv               ✅ 국가·기간별 기술통계 요약
 │   ├── comparison_developed_vs_emerging.csv✅ 선진국 vs 신흥국 비교 결과
@@ -44,8 +44,8 @@ project/
 
 <h3>✅ Problem 1. WRDS 연결 및 데이터 수집</h3>
 
-- <b>테이블:</b> comp.g_secm (Global Compustat)
-- <b>분석대상:</b> 10개국  
+- <b>데이터베이스:</b> Compustat (Global, via WRDS)
+- <b>분석대상국가 (10개):</b>  
   🇬🇧 영국 | 🇩🇪 독일 | 🇯🇵 일본 | 🇫🇷 프랑스 | 🇦🇺 호주 <br>
   🇨🇳 중국 | 🇮🇳 인도 | 🇧🇷 브라질 | 🇿🇦 남아프리카 | 🇹🇷 튀르키예
 - <b>기간:</b> 2020년 3월 ~ 2024년 12월  
@@ -57,18 +57,18 @@ project/
 <tr><td>datadate</td><td>데이터 기준 월말 날짜</td></tr>
 <tr><td>loc, fic</td><td>상장국가 / 법인등록국가</td></tr>
 <tr><td>prccm</td><td>월말 주가 (local currency)</td></tr>
-<tr><td>cshtrm</td><td>월간 거래주식수</td></tr>
+<tr><td>csho</td><td>발행주식수</td></tr>
 <tr><td>curcdm</td><td>통화코드</td></tr>
-<tr><td>country</td><td>상장국가 코드</td></tr>
+<tr><td>country</td><td>상장국가 코드 (분석용 추가 컬럼)</td></tr>
 </table>
 
 <br>
 
 <h3>✅ Problem 2. 수익률 계산 (EW/VW)</h3>
 
-- 개별 기업의 월간 수익률 계산 후, 국가 단위로  
-  <b>Equal-Weighted (EW)</b> / <b>Value-Weighted (VW)</b> 집계  
-- 결과 파일: <code>data/outPutData.csv</code>
+- 개별 기업의 월간 수익률을 계산하고, 국가 단위로  
+  <b>Equal-Weighted (EW)</b> / <b>Value-Weighted (VW)</b> 수익률을 산출  
+- 결과 파일: <code>data/outputData.csv</code>
 
 | country | datadate | ew_return | vw_return |
 |----------|-----------|-----------|-----------|
@@ -92,7 +92,7 @@ project/
 <h3>✅ Problem 4. 국가 및 기간별 요약 통계</h3>
 
 - 각 국가(country)와 기간(period)별로 평균(mean), 중앙값(median), 표준편차(std),  
-  왜도(skew), 첨도(kurtosis) 등 계산  
+  최소/최대(min/max), 왜도(skew), 초과첨도(kurtosis), 자기상관계수(autocorr) 계산  
 - 결과 파일: <code>data/outputDataSummary.csv</code>
 
 <br>
@@ -102,9 +102,9 @@ project/
 | 그룹 | 기간 | 평균 | 표준편차 | 왜도 | 초과첨도 |
 |------|------|-----------|-----------|-----------|-----------|
 | Developed | Crisis | -0.028 | 0.081 | 0.54 | 1.12 |
-| Emerging | Crisis | -0.053 | 0.114 | 0.87 | 2.45 |
+| Emerging  | Crisis | -0.053 | 0.114 | 0.87 | 2.45 |
 | Developed | Recovery | 0.015 | 0.043 | -0.12 | 0.69 |
-| Emerging | Recovery | 0.019 | 0.065 | -0.09 | 1.08 |
+| Emerging  | Recovery | 0.019 | 0.065 | -0.09 | 1.08 |
 
 결과 파일: <code>data/comparison_developed_vs_emerging.csv</code>
 
@@ -117,9 +117,9 @@ project/
 
 결과 파일:
 <ul>
-<li>data/correlation_crisis.csv</li>
-<li>data/correlation_recovery.csv</li>
-<li>data/correlation_summary.csv</li>
+<li><code>data/correlation_crisis.csv</code></li>
+<li><code>data/correlation_recovery.csv</code></li>
+<li><code>data/correlation_summary.csv</code></li>
 </ul>
 
 <br>
@@ -165,10 +165,12 @@ project/
 
 <h2>🧠 연구 요약 (Discussion)</h2>
 
-Crisis 기간 동안 신흥국은 선진국보다 훨씬 높은 변동성과 fat-tail 특성을 보였으며,
+Crisis 기간 동안 신흥국은 선진국보다 훨씬 높은 변동성과 fat-tail 특성을 보였으며,  
 Recovery 단계에서 평균 수익률이 빠르게 반등하나 분포의 안정성은 여전히 낮음. <br>
-선진국 시장은 회복기에도 비교적 안정적인 분포 형태를 유지하며,
+선진국 시장은 회복기에도 비교적 안정적인 분포 형태를 유지하며,  
 이는 금융시장의 구조적 안정성과 정보 비대칭 차이에 기인한 결과로 해석됨.
+
+<hr>
 
 <h2>🧩 실행 방법</h2>
 
@@ -182,5 +184,3 @@ python subject/main.py
 
 # 3. Problem 7만 시각화 실행
 python subject/presentationModule.py
-
-
